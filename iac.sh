@@ -25,10 +25,10 @@ elif [[ -n "$1" ]]; then
         pushd $HOME_FOLDER/infrastructure/$1
             echo "Provisioning $1"
             terraform  init
-            if [[ "$4" == "apply" ]]; then
+            if [[ "$2" == "apply" ]]; then
                 echo "Running 'terraform apply' ..."
                 terraform apply  -lock=false -var-file="vars.tfvars"
-            elif [[ "$4" == "destroy" ]]; then
+            elif [[ "$2" == "destroy" ]]; then
                 echo "Running 'terraform plan' ..."
                 terraform destroy  -lock=false -var-file="vars.tfvars"
             else
