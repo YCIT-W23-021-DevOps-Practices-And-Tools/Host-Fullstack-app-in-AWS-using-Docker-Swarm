@@ -2,12 +2,10 @@ version: '3.3'
 
 services:
   app:
-    image: swarmpit/swarmpit:1.8
+    image: swarmpit/swarmpit:latest
     environment:
       - SWARMPIT_DB=http://db:5984
       - SWARMPIT_INFLUXDB=http://influxdb:8086
-      - ADMIN_USERNAME=${ADMIN_USERNAME}
-      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
