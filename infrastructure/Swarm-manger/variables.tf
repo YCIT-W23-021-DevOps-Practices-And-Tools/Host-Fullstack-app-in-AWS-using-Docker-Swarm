@@ -1,0 +1,15 @@
+variable "name" {}
+variable "ami" {}
+variable "instance_type" {}
+variable "key_name" {}
+variable "serverhostname" {}
+variable "domain-name" {}
+variable "AWS_REGION" {}
+variable "AWS_ACCESS_KEY_ID" {}
+variable "AWS_SECRET_ACCESS_KEY" {}
+variable "DOCKER_LOGIN_USERNAME" {}
+variable "DOCKER_LOGIN_ACCESS_TOKEN" {}
+variable "domain-owner-email" {}
+variable "SLACK_CHANNEL" {}
+variable "SLACK_USER" {}
+variable "SLACK_URL" {}

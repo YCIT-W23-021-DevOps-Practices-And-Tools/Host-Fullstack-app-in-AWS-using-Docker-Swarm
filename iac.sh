@@ -1,8 +1,19 @@
 #!/usr/bin/env bash
-
-source ./environments.sh
-
 HOME_FOLDER=$(pwd)
+
+if [[ -e "$HOME_FOLDER/environments.sh" ]]; then
+    chmod +x "$HOME_FOLDER/environments.sh"
+    source $HOME_FOLDER/environments.sh
+fi
+
+export TF_VAR_AWS_REGION=$AWS_REGION
+export TF_VAR_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+export TF_VAR_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+export TF_VAR_DOCKER_LOGIN_USERNAME=$DOCKER_LOGIN_USERNAME
+export TF_VAR_DOCKER_LOGIN_ACCESS_TOKEN=$DOCKER_LOGIN_ACCESS_TOKEN
+export TF_VAR_SLACK_URL=$SLACK_URL
+
+
 
 if [[ "$1" == "apply-all" ]]; then
     for resource in $(ls -c $HOME_FOLDER/infrastructure); do
