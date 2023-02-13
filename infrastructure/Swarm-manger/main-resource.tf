@@ -1,6 +1,11 @@
 resource "aws_instance" "swarm-manager" {
     ami           = var.ami
     instance_type = var.instance_type
+    user_data_base64 = base64encode(templatefile("init.sh", {
+
+    }))
+
+    user_data_replace_on_change = true
     key_name      = var.key_name
 
     associate_public_ip_address = true
