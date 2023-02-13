@@ -7,6 +7,9 @@ if [[ -e "$HOME_FOLDER/environments.sh" ]]; then
     source $HOME_FOLDER/environments.sh
 fi
 
+export TF_VAR_DOCKER_LOGIN_USERNAME=$DOCKER_LOGIN_USERNAME
+export TF_VAR_DOCKER_LOGIN_ACCESS_TOKEN=$DOCKER_LOGIN_ACCESS_TOKEN
+
 if [[ "$1" == "apply-all" ]]; then
     for resource in $(ls -c $HOME_FOLDER/infrastructure); do
         pushd $HOME_FOLDER/infrastructure/$resource
