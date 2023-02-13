@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
-source ./environments.sh
-
 HOME_FOLDER=$(pwd)
+
+if [[ -e "$HOME_FOLDER/environments.sh" ]]; then
+    chmod +x "$HOME_FOLDER/environments.sh"
+    source $HOME_FOLDER/environments.sh
+fi
 
 if [[ "$1" == "apply-all" ]]; then
     for resource in $(ls -c $HOME_FOLDER/infrastructure); do
