@@ -59,3 +59,19 @@ resource "aws_security_group" "swarm-manager-internet-and-ssh" {
         cidr_blocks     = ["0.0.0.0/0"]
     }
 }
+
+resource "aws_route53_record" "private" {
+    zone_id = data.aws_route53_zone.primary.zone_id
+    name    = "swarm-manager.private.${var.domain-name}"
+    type    = "A"
+    ttl     = 300
+    records = [aws_instance.swarm-manager.private_ip]
+}
+
+resource "aws_route53_record" "public" {
+    zone_id = data.aws_route53_zone.primary.zone_id
+    name    = "swarm-manager.public.${var.domain-name}"
+    type    = "A"
+    ttl     = 300
+    records = [aws_instance.swarm-manager.public_ip]
+}
