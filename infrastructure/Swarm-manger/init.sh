@@ -66,3 +66,23 @@ pushd /github/ycit021
     git clone https://github.com/YCIT-W23-021-DevOps-Practices-And-Tools/Host-Fullstack-app-in-AWS-using-Docker-Swarm.git
 popd > /dev/null
 touch /steps/step010
+
+pushd /github/ycit021/Host-Fullstack-app-in-AWS-using-Docker-Swarm/infrastructure/Swarm-manger
+    docker network create --driver=overlay traefik-public
+    export NODE_ID=$(docker info -f '{{.Swarm.NodeID}}')
+
+    docker node update --label-add traefik-public.traefik-public-certificates=true $NODE_ID
+    export EMAIL=${domain-owner-email}
+
+    export DOMAIN=traefik.${domain-name}
+
+    export USERNAME=${domain-owner-email}
+
+    export PASSWORD=${swarm-master-password}
+    export HASHED_PASSWORD=$(openssl passwd -apr1 $PASSWORD)
+    docker stack deploy -c traefik-host.yml traefik &&  touch /steps/step011-1
+
+
+
+popd > /dev/null
+touch /steps/step011
