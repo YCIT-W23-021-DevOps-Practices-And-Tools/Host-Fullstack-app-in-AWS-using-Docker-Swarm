@@ -41,3 +41,18 @@ touch /steps/step007
 
 echo ${DOCKER_LOGIN_ACCESS_TOKEN} | docker login --username ${DOCKER_LOGIN_USERNAME} --password-stdin
 touch /steps/step008
+
+
+sudo mkdir -p /docker_swarm_config
+cd /docker_swarm_config
+
+pushd /docker_swarm_config
+    sudo docker swarm leave --force
+    sudo docker swarm init | grep -E "docker swarm join --token SW" > /docker_swarm_config/swarm_token.txt
+    sudo rpl -v "\n" "" swarm_token.txt
+    sudo rpl -v "    " "" swarm_token.txt
+    sudo docker swarm join-token manager | grep -E "docker swarm join --token SW" > /docker_swarm_config/swarm_token_manager.txt
+    sudo rpl -v "\n" "" /docker_swarm_config/swarm_token_manager.txt
+    sudo rpl -v "    " "" /docker_swarm_config/swarm_token_manager.txt
+popd > /dev/null
+touch /steps/step008
