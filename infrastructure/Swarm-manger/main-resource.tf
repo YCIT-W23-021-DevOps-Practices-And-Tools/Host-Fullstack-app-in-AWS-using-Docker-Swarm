@@ -2,7 +2,7 @@ resource "aws_instance" "swarm-manager" {
     ami           = var.ami
     instance_type = var.instance_type
     user_data_base64 = base64encode(templatefile("init.sh", {
-
+        serverhostname=var.serverhostname
     }))
 
     user_data_replace_on_change = true
@@ -74,4 +74,12 @@ resource "aws_route53_record" "public" {
     type    = "A"
     ttl     = 100
     records = [aws_instance.swarm-manager.public_ip]
+}
+
+resource "aws_route53_record" "traefik" {
+    zone_id = data.aws_route53_zone.primary.zone_id
+    name    = "swarm-manager.${var.domain-name}"
+    type    = "CNAME"
+    ttl     = 100
+    records = [aws_route53_record.public.name]
 }
