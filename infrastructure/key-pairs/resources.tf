@@ -5,13 +5,13 @@ resource "tls_private_key" "rsa" {
     rsa_bits  = 4096
 }
 
-# Save the public key in the local folder 
+# Save the public key in the local folder
 resource "local_file" "master-key-pub" {
     content  = tls_private_key.rsa.public_key_openssh
     filename = "~~${var.key_name}.pub"
 }
 
-# Save the private key in the local folder 
+# Save the private key in the local folder
 resource "local_file" "master-key-private" {
     content  = tls_private_key.rsa.private_key_pem
     filename = "~~${var.key_name}.pem"
@@ -29,6 +29,10 @@ resource "aws_key_pair" "master-key-pair" {
 # Provision a secret in AWS secret manager
 resource "aws_secretsmanager_secret" "store-master-key-in-sm" {
     name = var.key_name
+
+    lifecycle {
+        prevent_destroy = true
+    }
 }
 
 # Add Private key value in to above secret
