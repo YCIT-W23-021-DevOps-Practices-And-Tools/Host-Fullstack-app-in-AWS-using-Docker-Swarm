@@ -1,0 +1,50 @@
+
+name: Infrastructure CICD
+on:
+  push:
+    branches:
+      - wip-cicd
+
+jobs:
+  environment-vars:
+    name: Setup ENV Variables
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Vars
+        id: set-vars
+        run: |
+          if [[ "${{github.base_ref}}" == "wip-cicd" || "${{github.ref}}" == "refs/heads/wip-cicd" ]]; then
+            echo "::set-output name=ENV1::test1"
+          fi
+          if [[ "${{github.base_ref}}" == "staging" || "${{github.ref}}" == "refs/heads/staging" ]]; then
+            echo "::set-output name=ENVIRONMENT::staging"
+          fi
+          if [[ "${{github.base_ref}}" == "feature" || "${{github.ref}}" == "refs/heads/feature" ]]; then
+            echo "::set-output name=ENVIRONMENT::feature"
+          fi
+    outputs:
+      ENV1: ${{ steps.set-vars.outputs.ENV1 }}
+
+  apply:
+    needs: environment-vars
+    name: Deploy
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 16.x]
+
+    steps:
+      - name: Set Secrets
+        run: |
+          if [[ "${{github.base_ref}}" == "wip-cicd" || "${{github.ref}}" == "refs/heads/wip-cicd" ]]; then
+            echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+            echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+          fi
+      - name: Clone Repo
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
