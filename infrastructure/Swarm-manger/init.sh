@@ -38,3 +38,51 @@ touch /steps/step006
 
 sudo apt install -y git wget curl nano tmux rpl nfs-common
 touch /steps/step007
+
+echo ${DOCKER_LOGIN_ACCESS_TOKEN} | docker login --username ${DOCKER_LOGIN_USERNAME} --password-stdin
+touch /steps/step008
+
+
+sudo mkdir -p /docker_swarm_config
+cd /docker_swarm_config
+
+pushd /docker_swarm_config
+    sudo docker swarm leave --force
+    sudo docker swarm init | grep -E "docker swarm join --token SW" > /docker_swarm_config/swarm_token.txt
+    sudo rpl -v "\n" "" swarm_token.txt
+    sudo rpl -v "    " "" swarm_token.txt
+    sudo docker swarm join-token manager | grep -E "docker swarm join --token SW" > /docker_swarm_config/swarm_token_manager.txt
+    sudo rpl -v "\n" "" /docker_swarm_config/swarm_token_manager.txt
+    sudo rpl -v "    " "" /docker_swarm_config/swarm_token_manager.txt
+popd > /dev/null
+touch /steps/step008
+
+echo -e "StrictHostKeyChecking no\n" >> ~/.ssh/config
+ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa <<< y
+touch /steps/step009
+
+mkdir -p /github/ycit021
+pushd /github/ycit021
+    git clone https://github.com/YCIT-W23-021-DevOps-Practices-And-Tools/Host-Fullstack-app-in-AWS-using-Docker-Swarm.git
+popd > /dev/null
+touch /steps/step010
+
+pushd /github/ycit021/Host-Fullstack-app-in-AWS-using-Docker-Swarm/infrastructure/Swarm-manger
+    docker network create --driver=overlay traefik-public
+    export NODE_ID=$(docker info -f '{{.Swarm.NodeID}}')
+
+    docker node update --label-add traefik-public.traefik-public-certificates=true $NODE_ID
+    export EMAIL=${domain-owner-email}
+
+    export DOMAIN=traefik.${domain-name}
+
+    export USERNAME=${domain-owner-email}
+
+    export PASSWORD=${swarm-master-password}
+    export HASHED_PASSWORD=$(openssl passwd -apr1 $PASSWORD)
+    docker stack deploy -c traefik-host.yml traefik &&  touch /steps/step011-1
+
+
+
+popd > /dev/null
+touch /steps/step011
