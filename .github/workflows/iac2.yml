@@ -52,6 +52,12 @@ jobs:
             - name: install terraform
               run: |
                   terraform -v
+            - name: which terraform
+              run: |
+                  which terraform
+            - name: iac
+              run: |
+                  ./iac.sh
 
       # - name: Set Secrets
       #   run: |
