@@ -108,6 +108,6 @@ resource "aws_route53_record" "traefik" {
     zone_id = data.aws_route53_zone.primary.zone_id
     name    = "traefik.${var.domain-name}"
     type    = "CNAME"
-    ttl     = 300
+    ttl     = 100
     records = [aws_route53_record.public.name]
 }
