@@ -1,5 +1,5 @@
 
-name: Infrastructure CICD
+name: Infrastructure CICD2
 on:
     push:
         branches:
