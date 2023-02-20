@@ -1,0 +1,17 @@
+name: Infrastructure CICD
+on:
+  push:
+    branches:
+      - infra-cicd-implementation
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: test1
+        run: |
+          ls -la
+      - name: test2
+        run: |
+          uname -a
