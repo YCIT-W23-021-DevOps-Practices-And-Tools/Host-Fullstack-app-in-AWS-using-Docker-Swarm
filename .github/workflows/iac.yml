@@ -31,20 +31,27 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x, 16.x]
+        node-version: [18.x]
 
     steps:
-      - name: Set Secrets
+      - name: install terraform
         run: |
-          if [[ "${{github.base_ref}}" == "wip-cicd" || "${{github.ref}}" == "refs/heads/wip-cicd" ]]; then
-            echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
-            echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
-          fi
-      - name: Clone Repo
-        uses: actions/checkout@v2
+          sudo apt-get update && sudo apt-get install -y gnupg software-properties-common && sudo apt install terraform
+      - name: check installation
+        run: |
+          terraform --version
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
+      # - name: Set Secrets
+      #   run: |
+      #     if [[ "${{github.base_ref}}" == "wip-cicd" || "${{github.ref}}" == "refs/heads/wip-cicd" ]]; then
+      #       echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+      #       echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+      #     fi
+      # - name: Clone Repo
+      #   uses: actions/checkout@v2
+
+      # - name: Use Node.js ${{ matrix.node-version }}
+      #   uses: actions/setup-node@v1
+      #   with:
+      #     node-version: ${{ matrix.node-version }}
 
