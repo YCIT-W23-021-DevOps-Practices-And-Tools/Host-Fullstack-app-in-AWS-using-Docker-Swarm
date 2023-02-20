@@ -2,7 +2,7 @@ name: Infrastructure CICD
 on:
   push:
     branches:
-      - infra-cicd-implementation
+      - infra-deploy
 
 jobs:
   deploy_last_infra_code:
@@ -18,7 +18,7 @@ jobs:
       - name: Clone Repo
         uses: actions/checkout@v3
         with:
-          ref: infra-cicd-implementation
+          ref: infra-deploy
       - name: Deploy
         id: deploy
         run: |
