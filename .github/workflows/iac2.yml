@@ -59,7 +59,7 @@ jobs:
               uses: actions/checkout@v2
             - name: iac
               run: |
-                  ./iac.sh
+                  ./iac.sh apply-all
 
       # - name: Set Secrets
       #   run: |
