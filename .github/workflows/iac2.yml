@@ -55,6 +55,8 @@ jobs:
             - name: which terraform
               run: |
                   which terraform
+            - name: Clone Repo
+              uses: actions/checkout@v2
             - name: iac
               run: |
                   ./iac.sh
