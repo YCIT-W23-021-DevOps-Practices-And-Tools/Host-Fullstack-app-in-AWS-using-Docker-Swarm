@@ -58,3 +58,9 @@ pushd /docker_swarm_config
     sudo rpl -v "    " "" /docker_swarm_config/swarm_token_manager.txt
 popd > /dev/null
 touch /steps/step009
+
+mkdir -p /github/ycit021
+pushd /github/ycit021
+    git clone https://github.com/YCIT-W23-021-DevOps-Practices-And-Tools/Host-Fullstack-app-in-AWS-using-Docker-Swarm.git
+popd > /dev/null
+touch /steps/step010
