@@ -57,21 +57,13 @@ jobs:
                   which terraform
             - name: Clone Repo
               uses: actions/checkout@v2
+            - name: Set Secrets
+              run: |
+                    echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
+                    echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+                    echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
             - name: iac
               run: |
                   ./iac.sh apply-all force
 
-      # - name: Set Secrets
-      #   run: |
-      #     if [[ "${{github.base_ref}}" == "wip-cicd" || "${{github.ref}}" == "refs/heads/wip-cicd" ]]; then
-      #       echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
-      #       echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
-      #     fi
-      # - name: Clone Repo
-      #   uses: actions/checkout@v2
-
-      # - name: Use Node.js ${{ matrix.node-version }}
-      #   uses: actions/setup-node@v1
-      #   with:
-      #     node-version: ${{ matrix.node-version }}
 
