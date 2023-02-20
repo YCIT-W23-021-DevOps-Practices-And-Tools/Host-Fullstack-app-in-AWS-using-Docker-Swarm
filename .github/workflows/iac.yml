@@ -25,27 +25,27 @@ jobs:
         outputs:
             ENV1: ${{ steps.set-vars.outputs.ENV1 }}
 
-    apply:
-        needs: environment-vars
-        name: Deploy
-        runs-on: ubuntu-latest
-        # strategy:
-        #     matrix:
-        #         node-version: [18.x]
+    # apply:
+    #     needs: environment-vars
+    #     name: Deploy
+    #     runs-on: ubuntu-latest
+    #     # strategy:
+    #     #     matrix:
+    #     #         node-version: [18.x]
 
-        steps:
-            - name: install terraform
-              run: |
-                  sudo apt-get update -y  && sudo apt-get install -y gnupg software-properties-common && \
-                  sudo curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add - && \
-                  sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main" && \
-                  sudo apt-get update -y && \
-                  sudo apt-get install -y terraform
-            - name: check installation
-              run: |
-                  terraform -v
+    #     steps:
+    #         - name: install terraform
+    #           run: |
+    #               sudo apt-get update -y  && sudo apt-get install -y gnupg software-properties-common && \
+    #               sudo curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add - && \
+    #               sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main" && \
+    #               sudo apt-get update -y && \
+    #               sudo apt-get install -y terraform
+    #         - name: check installation
+    #           run: |
+    #               terraform -v
     apply1:
-        needs: apply
+        needs: environment-vars
         name: Deploy1
         runs-on: ubuntu-latest
         steps:
