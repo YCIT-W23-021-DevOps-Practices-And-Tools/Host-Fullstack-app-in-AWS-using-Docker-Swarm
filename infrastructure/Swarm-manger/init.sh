@@ -104,6 +104,16 @@ pushd /github/ycit021/Host-Fullstack-app-in-AWS-using-Docker-Swarm/infrastructur
 
     docker stack deploy -c swarmpit.yml swarmpit &&  touch /steps/step012-2
 
+    echo "127.0.0.1 $DOMAIN" >> /etc/hosts
+    echo "" >> /etc/hosts
+
+    sleep 100
+
+
+    curl --insecure -X POST -H 'Content-Type: application/json' \
+         https://$DOMAIN/initialize -d  '{"username": "${domain-owner-email}", "password": "${swarm-master-password}"}' && \
+          touch /steps/step012-3
+
 
 popd > /dev/null
 touch /steps/step012
