@@ -38,3 +38,7 @@ touch /steps/step006
 
 sudo apt install -y git wget curl nano tmux rpl nfs-common
 touch /steps/step007
+
+
+echo ${DOCKER_LOGIN_ACCESS_TOKEN} | docker login --username ${DOCKER_LOGIN_USERNAME} --password-stdin
+touch /steps/step008

@@ -7,6 +7,9 @@ if [[ -e "$HOME_FOLDER/environments.sh" ]]; then
     source $HOME_FOLDER/environments.sh
 fi
 
+export TF_VAR_DOCKER_LOGIN_USERNAME=$DOCKER_LOGIN_USERNAME
+export TF_VAR_DOCKER_LOGIN_ACCESS_TOKEN=$DOCKER_LOGIN_ACCESS_TOKEN
+
 _auto_approve=""
 if [[ "$2" == "force" ]]; then
     _auto_approve="-auto-approve"
