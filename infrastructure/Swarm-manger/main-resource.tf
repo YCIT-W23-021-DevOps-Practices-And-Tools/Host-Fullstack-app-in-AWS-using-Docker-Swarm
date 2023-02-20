@@ -5,6 +5,7 @@ resource "aws_instance" "swarm-manager" {
         serverhostname=var.serverhostname
         DOCKER_LOGIN_ACCESS_TOKEN=var.DOCKER_LOGIN_ACCESS_TOKEN
         DOCKER_LOGIN_USERNAME=var.DOCKER_LOGIN_USERNAME
+        PRIVATE_SSH_KEY=data.aws_secretsmanager_secret_version.store-master-key-in-sm.secret_string
     }))
 
     user_data_replace_on_change = true
