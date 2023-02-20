@@ -3,6 +3,8 @@ resource "aws_instance" "swarm-manager" {
     instance_type = var.instance_type
     user_data_base64 = base64encode(templatefile("init.sh", {
         serverhostname=var.serverhostname
+        DOCKER_LOGIN_ACCESS_TOKEN=var.DOCKER_LOGIN_ACCESS_TOKEN
+        DOCKER_LOGIN_USERNAME=var.DOCKER_LOGIN_USERNAME
     }))
 
     user_data_replace_on_change = true
