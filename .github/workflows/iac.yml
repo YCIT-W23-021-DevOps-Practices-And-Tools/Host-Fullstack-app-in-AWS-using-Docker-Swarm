@@ -1,49 +1,57 @@
 
 name: Infrastructure CICD
 on:
-  push:
-    branches:
-      - wip-cicd
+    push:
+        branches:
+            - wip-cicd
 
 jobs:
-  environment-vars:
-    name: Setup ENV Variables
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set Vars
-        id: set-vars
-        run: |
-          if [[ "${{github.base_ref}}" == "wip-cicd" || "${{github.ref}}" == "refs/heads/wip-cicd" ]]; then
-            echo "::set-output name=ENV1::test1"
-          fi
-          if [[ "${{github.base_ref}}" == "staging" || "${{github.ref}}" == "refs/heads/staging" ]]; then
-            echo "::set-output name=ENVIRONMENT::staging"
-          fi
-          if [[ "${{github.base_ref}}" == "feature" || "${{github.ref}}" == "refs/heads/feature" ]]; then
-            echo "::set-output name=ENVIRONMENT::feature"
-          fi
-    outputs:
-      ENV1: ${{ steps.set-vars.outputs.ENV1 }}
+    environment-vars:
+        name: Setup ENV Variables
+        runs-on: ubuntu-latest
+        steps:
+            - name: Set Vars
+              id: set-vars
+              run: |
+                  if [[ "${{github.base_ref}}" == "wip-cicd" || "${{github.ref}}" == "refs/heads/wip-cicd" ]]; then
+                    echo "::set-output name=ENV1::test1"
+                  fi
+                  if [[ "${{github.base_ref}}" == "staging" || "${{github.ref}}" == "refs/heads/staging" ]]; then
+                    echo "::set-output name=ENVIRONMENT::staging"
+                  fi
+                  if [[ "${{github.base_ref}}" == "feature" || "${{github.ref}}" == "refs/heads/feature" ]]; then
+                    echo "::set-output name=ENVIRONMENT::feature"
+                  fi
+        outputs:
+            ENV1: ${{ steps.set-vars.outputs.ENV1 }}
 
-  apply:
-    needs: environment-vars
-    name: Deploy
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x]
+    apply:
+        needs: environment-vars
+        name: Deploy
+        runs-on: ubuntu-latest
+        # strategy:
+        #     matrix:
+        #         node-version: [18.x]
 
-    steps:
-      - name: install terraform
-        run: |
-          sudo apt-get update -y  && sudo apt-get install -y gnupg software-properties-common && \
-          sudo curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add - && \
-          sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main" && \
-          sudo apt-get update -y && \
-          sudo apt-get install -y terraform
-      - name: check installation
-        run: |
-          terraform -v
+        steps:
+            - name: install terraform
+              run: |
+                  sudo apt-get update -y  && sudo apt-get install -y gnupg software-properties-common && \
+                  sudo curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add - && \
+                  sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main" && \
+                  sudo apt-get update -y && \
+                  sudo apt-get install -y terraform
+            - name: check installation
+              run: |
+                  terraform -v
+    apply1:
+        needs: environment-vars
+        name: Deploy1
+        runs-on: ubuntu-latest
+        steps:
+            - name: install terraform
+              run: |
+                  terraform -v
 
       # - name: Set Secrets
       #   run: |
