@@ -15,7 +15,7 @@ jobs:
           echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
           echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
-      - name: Use the value
-        id: test
+      - name: Deploy
+        id: deploy
         run: |
-          echo "${{ env.AWS_ACCESS_KEY_ID }}"
+          ./iac.sh apply-all
