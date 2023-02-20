@@ -45,7 +45,7 @@ jobs:
               run: |
                   terraform -v
     apply1:
-        needs: environment-vars
+        needs: apply
         name: Deploy1
         runs-on: ubuntu-latest
         steps:
