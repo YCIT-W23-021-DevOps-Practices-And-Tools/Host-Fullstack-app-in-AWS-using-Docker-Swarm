@@ -18,4 +18,4 @@ jobs:
       - name: Use the value
         id: test
         run: |
-          echo "${{ env.ENV_TEST }}"
+          echo "${{ env.AWS_ACCESS_KEY_ID }}"
