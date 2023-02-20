@@ -94,5 +94,16 @@ pushd /github/ycit021/Host-Fullstack-app-in-AWS-using-Docker-Swarm/infrastructur
     export HASHED_PASSWORD=$(openssl passwd -apr1 $PASSWORD)
     docker stack deploy -c traefik-host.yml traefik &&  touch /steps/step012-1
 
+    export DOMAIN=swarmpit.${domain-name}
+
+    export NODE_ID=$(docker info -f '{{.Swarm.NodeID}}')
+
+    docker node update --label-add swarmpit.db-data=true $NODE_ID
+
+    docker node update --label-add swarmpit.influx-data=true $NODE_ID
+
+    docker stack deploy -c swarmpit.yml swarmpit &&  touch /steps/step012-2
+
+
 popd > /dev/null
 touch /steps/step012

@@ -111,3 +111,11 @@ resource "aws_route53_record" "traefik" {
     ttl     = 100
     records = [aws_route53_record.public.name]
 }
+
+resource "aws_route53_record" "swarmpit" {
+    zone_id = data.aws_route53_zone.primary.zone_id
+    name    = "swarmpit.${var.domain-name}"
+    type    = "CNAME"
+    ttl     = 100
+    records = [aws_route53_record.public.name]
+}
