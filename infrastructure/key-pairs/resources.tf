@@ -6,13 +6,13 @@ resource "tls_private_key" "rsa" {
 }
 
 # Save the public key in the local folder
-resource "local_file" "master-key-pub" {
+resource "local_sensitive_file" "master-key-pub" {
     content  = tls_private_key.rsa.public_key_openssh
     filename = "~~${var.key_name}.pub"
 }
 
 # Save the private key in the local folder
-resource "local_file" "master-key-private" {
+resource "local_sensitive_file" "master-key-private" {
     content  = tls_private_key.rsa.private_key_pem
     filename = "~~${var.key_name}.pem"
 }
