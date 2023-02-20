@@ -22,4 +22,4 @@ jobs:
       - name: Deploy
         id: deploy
         run: |
-          ./iac.sh apply-all
+          ./iac.sh apply-all force
