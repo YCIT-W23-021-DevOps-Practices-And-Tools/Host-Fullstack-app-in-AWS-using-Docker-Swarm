@@ -7,12 +7,18 @@ if [[ -e "$HOME_FOLDER/environments.sh" ]]; then
     source $HOME_FOLDER/environments.sh
 fi
 
+_auto_approve=""
+if [[ "$2" == "force" ]]; then
+    _auto_approve="-auto-approve"
+fi
+
+
 if [[ "$1" == "apply-all" ]]; then
     for resource in $(ls -c $HOME_FOLDER/infrastructure); do
         pushd $HOME_FOLDER/infrastructure/$resource
             echo "Provisioning $resource"
             terraform  init
-            terraform  apply -lock=false -var-file="vars.tfvars"
+            terraform  apply -lock=false -var-file="vars.tfvars" $_auto_approve
         popd > /dev/null
     done
 elif [[ "$1" == "destroy-all" ]]; then
@@ -20,7 +26,7 @@ elif [[ "$1" == "destroy-all" ]]; then
         pushd $HOME_FOLDER/infrastructure/$resource
             echo "Provisioning $resource"
             terraform  init
-            terraform  destroy -lock=false -var-file="vars.tfvars"
+            terraform  destroy -lock=false -var-file="vars.tfvars" $_auto_approve
         popd > /dev/null
     done
 elif [[ -n "$1" ]]; then

@@ -1,0 +1,25 @@
+name: Infrastructure CICD
+on:
+  push:
+    branches:
+      - infra-cicd-implementation
+
+jobs:
+  deploy_last_infra_code:
+    name: Deploy last infra code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Environment Variables
+        run: |
+          echo "ENV_TEST=test_env" >> $GITHUB_ENV
+          echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+      - name: Clone Repo
+        uses: actions/checkout@v3
+        with:
+          ref: infra-cicd-implementation
+      - name: Deploy
+        id: deploy
+        run: |
+          ./iac.sh apply-all force
