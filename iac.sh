@@ -9,6 +9,7 @@ fi
 
 export TF_VAR_DOCKER_LOGIN_USERNAME=$DOCKER_LOGIN_USERNAME
 export TF_VAR_DOCKER_LOGIN_ACCESS_TOKEN=$DOCKER_LOGIN_ACCESS_TOKEN
+export TF_VAR_SLACK_URL=$SLACK_URL
 
 _auto_approve=""
 if [[ "$2" == "force" ]]; then

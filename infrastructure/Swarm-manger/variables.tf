@@ -14,4 +14,6 @@ variable "DOCKER_LOGIN_USERNAME" {
 }
 
 variable "domain-owner-email" {}
-
+variable "SLACK_CHANNEL" {}
+variable "SLACK_USER" {}
+variable "SLACK_URL" {}
