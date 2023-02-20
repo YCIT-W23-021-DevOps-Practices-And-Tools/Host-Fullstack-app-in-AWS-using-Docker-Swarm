@@ -114,6 +114,25 @@ pushd /github/ycit021/Host-Fullstack-app-in-AWS-using-Docker-Swarm/infrastructur
          https://$DOMAIN/initialize -d  '{"username": "${domain-owner-email}", "password": "${swarm-master-password}"}' && \
           touch /steps/step012-3
 
+     export ADMIN_USER=${domain-owner-email}
+
+    export ADMIN_PASSWORD=${swarm-master-password}
+
+    export HASHED_PASSWORD=$(openssl passwd -apr1 $ADMIN_PASSWORD)
+
+    export DOMAIN=${domain-name}
+
+    export SLACK_URL=${SLACK_URL}
+    export SLACK_CHANNEL=${SLACK_CHANNEL}
+    export SLACK_USER=${SLACK_USER}
+
+    git clone https://github.com/stefanprodan/swarmprom.git
+
+    cp swarmprom.yml swarmprom/swarmprom.yml
+    pushd /github/ycit021/Host-Fullstack-app-in-AWS-using-Docker-Swarm/infrastructure/Swarm-manger/swarmprom
+        docker stack deploy -c swarmprom.yml swarmprom &&  touch /steps/step012-4
+    popd > /dev/null
+
 
 popd > /dev/null
 touch /steps/step012
