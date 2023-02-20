@@ -9,7 +9,7 @@ fi
 
 
 _auto_approve=""
-if [[ "$2"=="force" ]]; then
+if [[ "$2" == "force" ]]; then
     _auto_approve="-auto-approve"
 fi
 
