@@ -59,8 +59,23 @@ pushd /docker_swarm_config
 popd > /dev/null
 touch /steps/step009
 
+
+echo -e "StrictHostKeyChecking no\n" >> /root/.ssh/config
+
+cat >  /root/.ssh/id_rsa << EOL
+${PRIVATE_SSH_KEY}
+EOL
+
+chmod 600  /root/.ssh/id_rsa
+ssh-keygen -f /root/.ssh/id_rsa -y > /root/.ssh/id_rsa.pub
+cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+sudo chmod 600 /root/.ssh/authorized_keys
+touch /steps/step010
+
 mkdir -p /github/ycit021
 pushd /github/ycit021
-    git clone https://github.com/YCIT-W23-021-DevOps-Practices-And-Tools/Host-Fullstack-app-in-AWS-using-Docker-Swarm.git
+    git clone git@github.com:YCIT-W23-021-DevOps-Practices-And-Tools/Host-Fullstack-app-in-AWS-using-Docker-Swarm.git
 popd > /dev/null
-touch /steps/step010
+touch /steps/step011
+
+

@@ -39,4 +39,7 @@ resource "aws_secretsmanager_secret" "store-master-key-in-sm" {
 resource "aws_secretsmanager_secret_version" "store-master-key-in-sm" {
     secret_id     = aws_secretsmanager_secret.store-master-key-in-sm.id
     secret_string = tls_private_key.rsa.private_key_pem
+    lifecycle {
+        prevent_destroy = true
+    }
 }
