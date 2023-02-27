@@ -136,3 +136,5 @@ pushd /github/ycit021/Host-Fullstack-app-in-AWS-using-Docker-Swarm/infrastructur
 
 popd > /dev/null
 touch /steps/step012
+
+

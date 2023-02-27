@@ -59,3 +59,11 @@ cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 sudo chmod 600 /root/.ssh/authorized_keys
 touch /steps/step010
 
+mkdir /docker_swarm_config
+
+rsync -chavzP --stats root@swarm-manager.private.codevteacher.com:/docker_swarm_config/ /docker_swarm_config/
+
+cd /docker_swarm_config
+
+bash swarm_token.txt
+
