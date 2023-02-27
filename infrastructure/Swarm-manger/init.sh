@@ -114,7 +114,7 @@ pushd /github/ycit021/Host-Fullstack-app-in-AWS-using-Docker-Swarm/infrastructur
          https://$DOMAIN/initialize -d  '{"username": "${domain-owner-email}", "password": "${swarm-master-password}"}' && \
           touch /steps/step012-3
 
-     export ADMIN_USER=${domain-owner-email}
+    export ADMIN_USER=${domain-owner-email}
 
     export ADMIN_PASSWORD=${swarm-master-password}
 
