@@ -82,3 +82,26 @@ services:
             - |
                npm i && npm run start:dev
 
+    ycit021_mic2_fastapi_read_delete:
+        container_name: ycit021_mic2_fastapi_read_delete
+        networks:
+            - ycit021-network
+        build:
+            context: ./mic2_fastapi_read_delete
+            dockerfile: ./Dockerfile
+        restart: unless-stopped
+        # platform: linux/amd64
+        ports:
+            - '7002:8080'
+        environment:
+            - TEST_VAR=test
+        volumes:
+          - ./mic2_fastapi_read_delete:/code
+        command:
+            - /bin/bash
+            - -c
+            - |
+               uvicorn main:app --host 0.0.0.0 --port 8080
+
+
+
