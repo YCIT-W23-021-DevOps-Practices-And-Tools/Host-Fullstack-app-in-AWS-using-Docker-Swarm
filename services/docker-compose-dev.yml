@@ -1,0 +1,27 @@
+version: '3.2'
+
+networks:
+    ycit021-network:
+        external: true
+
+services:
+    ycit021_front-end:
+        container_name: ycit021_front-end
+        networks:
+            - ycit021-network
+        build:
+            context: ./front-end
+            dockerfile: ./Dockerfile
+        restart: unless-stopped
+        # platform: linux/amd64
+        ports:
+            - '3001:3000'
+        environment:
+            - TEST_VAR=test
+        volumes:
+          - ./front-end:/app
+        command:
+            - /bin/bash
+            - -c
+            - |
+               npm i && npm run start
