@@ -5,6 +5,21 @@ networks:
         external: true
 
 services:
+
+    ycit_db:
+        container_name: ycit_db
+        networks:
+            - ycit021-network
+        image: mysql:8.0.29
+        platform: linux/amd64
+        volumes:
+            - ./mysql/~~data:/var/lib/mysql
+            - ./mysql/dev-init.sql:/docker-entrypoint-initdb.d/init.sql
+        environment:
+            - MYSQL_ROOT_PASSWORD=mysql-root-password
+            - PORT=3306
+        ports:
+            - '3306:3306'
     ycit021_front-end:
         container_name: ycit021_front-end
         networks:
