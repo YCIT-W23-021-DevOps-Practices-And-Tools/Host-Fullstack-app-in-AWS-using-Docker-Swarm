@@ -25,3 +25,25 @@ services:
             - -c
             - |
                npm i && npm run start
+
+    ycit021_api:
+        container_name: ycit021_api
+        networks:
+            - ycit021-network
+        build:
+            context: ./api
+            dockerfile: ./Dockerfile
+        restart: unless-stopped
+        # platform: linux/amd64
+        ports:
+            - '8001:3000'
+        environment:
+            - TEST_VAR=test
+        volumes:
+          - ./api:/app
+        command:
+            - /bin/bash
+            - -c
+            - |
+               npm i && npm run start:debug
+
