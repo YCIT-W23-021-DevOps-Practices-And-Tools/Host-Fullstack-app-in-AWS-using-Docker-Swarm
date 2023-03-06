@@ -61,4 +61,24 @@ services:
             - -c
             - |
                npm i && npm run start:debug
+    ycit021_mic1_express_create_an_update:
+        container_name: ycit021_mic1_express_create_an_update
+        networks:
+            - ycit021-network
+        build:
+            context: ./mic1_express_create_an_update
+            dockerfile: ./Dockerfile
+        restart: unless-stopped
+        # platform: linux/amd64
+        ports:
+            - '7001:3000'
+        environment:
+            - TEST_VAR=test
+        volumes:
+          - ./mic1_express_create_an_update:/app
+        command:
+            - /bin/bash
+            - -c
+            - |
+               npm i && npm run start:dev
 
