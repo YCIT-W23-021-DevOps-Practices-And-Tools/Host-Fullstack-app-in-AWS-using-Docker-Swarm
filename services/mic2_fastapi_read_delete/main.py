@@ -22,7 +22,17 @@ async def root():
 
 
 @app.get("/users")
-async def root():
+async def usersGet():
     mycursor.execute("SELECT * FROM users")
     users = mycursor.fetchall()
     return users
+
+@app.get("/users/{user_id}")
+async def userGet(user_id):
+    mycursor.execute("SELECT * FROM users where id={user_id}".format(user_id=user_id))
+    users = mycursor.fetchall()
+    if len(users) > 0:
+        return users[0]
+    else:
+        return {}
+
