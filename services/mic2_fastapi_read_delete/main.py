@@ -27,12 +27,30 @@ async def usersGet():
     users = mycursor.fetchall()
     return users
 
+
 @app.get("/users/{user_id}")
 async def userGet(user_id):
-    mycursor.execute("SELECT * FROM users where id={user_id}".format(user_id=user_id))
+    mycursor.execute(
+        "SELECT * FROM users where id={user_id}".format(user_id=user_id))
     users = mycursor.fetchall()
     if len(users) > 0:
         return users[0]
     else:
         return {}
 
+
+@app.delete("/users/{user_id}")
+async def userDelete(user_id):
+    user = await userGet(user_id)
+    if user.get("id"):
+        mycursor.execute(
+            "DELETE FROM users WHERE id={user_id}".format(user_id=user_id)
+        )
+        mydb.commit()
+        return {
+            "message": "user with id {user_id} is deleted successfully".format(user_id=user_id)
+        }
+    else:
+        return {
+            "message": "user with id {user_id} is not exist in users collection".format(user_id=user_id)
+        }
