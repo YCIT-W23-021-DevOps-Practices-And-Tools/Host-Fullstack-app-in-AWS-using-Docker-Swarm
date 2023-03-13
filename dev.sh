@@ -12,4 +12,7 @@ if [[ "$1" == "start" ]]; then
     docker compose -f $HOME_FOLDER/services/docker-compose-dev.yml up
 elif [[ "$1" == "stop" ]]; then
     docker compose -f $HOME_FOLDER/services/docker-compose-dev.yml down
+elif [[ "$1" == "rebuild" ]]; then
+    docker compose -f $HOME_FOLDER/services/docker-compose-dev.yml rm -f
+    docker compose -f $HOME_FOLDER/services/docker-compose-dev.yml build --no-cache
 fi
