@@ -62,6 +62,20 @@ function App() {
     await fetchAllUser(setUsers);
   }
 
+  const handleDeleteUser = async (user_id) => {
+    await fetch(
+      `${process.env.REACT_APP_API_ENDPOINT}/users/${user_id}`,
+      {
+        method: 'delete',
+        headers: new Headers({
+          'Authorization': `Basic ${encode(process.env.REACT_APP_API_BASIC_USER + ":" + process.env.REACT_APP_API_BASIC_PASSWORD)}`,
+          'Content-Type': 'application/json'
+        }),
+      },
+    );
+    await fetchAllUser(setUsers);
+  }
+
   useEffect(() => {
     (async () => {
       await fetchAllUser(setUsers);
@@ -148,12 +162,14 @@ function App() {
               <th>Last Name</th>
               <th>Cell Phone</th>
               <th>age</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {
               users.length <= 0
               && <tr>
+                <td>-</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
@@ -171,6 +187,14 @@ function App() {
                     <td>{user.last_name}</td>
                     <td>{user.cell_phone}</td>
                     <td>{user.age}</td>
+                    <td className='actionsSection'>
+                      <div>
+                        <button>update</button>
+                        <button
+                          onClick={async () => { await handleDeleteUser(user.id) }}
+                        >delete</button>
+                      </div>
+                    </td>
                   </tr>
                 )
               })
