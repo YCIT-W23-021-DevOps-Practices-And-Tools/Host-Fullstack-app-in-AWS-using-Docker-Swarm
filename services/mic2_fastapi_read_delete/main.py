@@ -2,18 +2,32 @@ from fastapi import FastAPI
 import os
 import mysql.connector
 
+
 app = FastAPI()
 
+mydb=None
+mycursor=None
+isConnected=False
 
-mydb = mysql.connector.connect(
-    host=os.environ.get('DB_DOCKER_HOST'),
-    port=os.environ.get('DB_DOCKER_PORT'),
-    user=os.environ.get('DB_DOCKER_USER'),
-    password=os.environ.get('DB_DOCKER_PASSWORD'),
-    database=os.environ.get('DB_DOCKER_DB_NAME')
-)
+async def dbInit():
+    try:
+        global mydb
+        global mycursor
+        global isConnected
+        if(isConnected):
+                return
+        mydb = mysql.connector.connect(
+            host=os.environ.get('DB_DOCKER_HOST'),
+            port=os.environ.get('DB_DOCKER_PORT'),
+            user=os.environ.get('DB_DOCKER_USER'),
+            password=os.environ.get('DB_DOCKER_PASSWORD'),
+            database=os.environ.get('DB_DOCKER_DB_NAME')
+        )
 
-mycursor = mydb.cursor(dictionary=True)
+        mycursor = mydb.cursor(dictionary=True)
+    except:
+        pass
+
 
 
 @app.get("/")
@@ -23,6 +37,7 @@ async def root():
 
 @app.get("/users")
 async def usersGet():
+    await dbInit()
     mycursor.execute("SELECT * FROM users")
     users = mycursor.fetchall()
     return users
@@ -30,6 +45,7 @@ async def usersGet():
 
 @app.get("/users/{user_id}")
 async def userGet(user_id):
+    await dbInit()
     mycursor.execute(
         "SELECT * FROM users where id={user_id}".format(user_id=user_id))
     users = mycursor.fetchall()
@@ -41,6 +57,7 @@ async def userGet(user_id):
 
 @app.delete("/users/{user_id}")
 async def userDelete(user_id):
+    await dbInit()
     user = await userGet(user_id)
     if user.get("id"):
         mycursor.execute(
