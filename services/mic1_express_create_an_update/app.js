@@ -45,9 +45,35 @@ app.put('/user', async (req, res) => {
   const insertQuery = `INSERT INTO users ( first_name, last_name, cell_phone, age ) VALUES ( '${first_name}', '${last_name}', '${cell_phone}', ${age} )`;
   const resultOfInserting = await mysqlConnection.promise().query(insertQuery);
   res.send({
-    message: `${JSON.stringify(body)} is stored successfully with id ${resultOfInserting[0].insertId}`
+    message: `${JSON.stringify(body)} is stored successfully with id ${resultOfInserting[0].insertId}`,
+    insertId: resultOfInserting[0].insertId
   })
 })
+
+
+app.patch('/user', async (req, res) => {
+  const body = req.body
+
+  if(!body.id){
+    throw new Error('id is not exist')
+  }
+
+  const newFields = ['id', ...fields];
+
+  Object.keys(body).forEach((item) => {
+    if (!newFields.includes(item)) {
+      throw new Error(`key ${item} is not supported`)
+    }
+  })
+
+  const {first_name, last_name, cell_phone, age} = body;
+  const updateQuery = `UPDATE users set  first_name='${first_name}', last_name='${last_name}', cell_phone='${cell_phone}', age=${age}    where id=${body.id}`;
+  const resultOfInserting = await mysqlConnection.promise().query(updateQuery);
+  res.send({
+    message: `${JSON.stringify(body)} successfully updated!, with id ${body.id}`
+  })
+})
+
 
 app.listen(3000, () => {
   console.log('Example app listening on port 3000')
