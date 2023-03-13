@@ -6,12 +6,14 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const users = {};
   app.enableCors();
-  users[`${process.env.API_USER_NAME}`] = process.env.API_PASSWORD;
-  app.use(
-    basicAuth({
-      users: users,
-    }),
-  );
+  if (process.env.API_USER_NAME) {
+    users[`${process.env.API_USER_NAME}`] = process.env.API_PASSWORD;
+    app.use(
+      basicAuth({
+        users: users,
+      }),
+    );
+  }
   await app.listen(3000);
 }
 bootstrap();

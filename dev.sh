@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-HOME_FOLDER=$(pwd)
+export HOME_FOLDER=$(pwd)
+
+export PROJECT_VERSION=$($HOME_FOLDER/printVersion.js)
 
 if [[ -e "$HOME_FOLDER/environments.sh" ]]; then
     chmod +x "$HOME_FOLDER/environments.sh"
@@ -15,4 +17,15 @@ elif [[ "$1" == "stop" ]]; then
 elif [[ "$1" == "rebuild" ]]; then
     docker compose -f $HOME_FOLDER/services/docker-compose-dev.yml rm -f
     docker compose -f $HOME_FOLDER/services/docker-compose-dev.yml build --no-cache
+elif [[ "$1" == "build-and-push" ]]; then
+    for service in $(ls -C "$HOME_FOLDER/services/") ; do
+        if [[ ! -f $HOME_FOLDER/services/$service/build-and-push.sh ]]; then
+            continue
+        fi
+        export SERVICE_NAME=$service
+
+        export SERVICE_DIR=$HOME_FOLDER/services/$SERVICE_NAME
+
+        source $HOME_FOLDER/services/$SERVICE_NAME/build-and-push.sh
+    done
 fi
