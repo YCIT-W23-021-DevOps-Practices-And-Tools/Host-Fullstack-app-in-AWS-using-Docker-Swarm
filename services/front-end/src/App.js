@@ -30,6 +30,13 @@ function App() {
     }
   }
 
+  const removeAllFields = () => {
+    setFirstName('');
+    setLastName('');
+    setCell('');
+    setAge('');
+  }
+
   const handleCreateUser = async () => {
 
     const body = {
@@ -38,6 +45,8 @@ function App() {
       cell_phone: cell,
       age: age,
     }
+
+    removeAllFields();
 
     await fetch(
       `${process.env.REACT_APP_API_ENDPOINT}/users`,
