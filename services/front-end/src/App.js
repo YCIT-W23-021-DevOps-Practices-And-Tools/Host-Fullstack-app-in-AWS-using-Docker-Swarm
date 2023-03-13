@@ -7,6 +7,7 @@ import { encode } from "base-64";
 function App() {
 
   const [users, setUsers] = useState([]);
+  const [userId, setUserId] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [cell, setCell] = useState('');
@@ -31,6 +32,7 @@ function App() {
   }
 
   const removeAllFields = () => {
+    setUserId('');
     setFirstName('');
     setLastName('');
     setCell('');
@@ -71,6 +73,54 @@ function App() {
           'Authorization': `Basic ${encode(process.env.REACT_APP_API_BASIC_USER + ":" + process.env.REACT_APP_API_BASIC_PASSWORD)}`,
           'Content-Type': 'application/json'
         }),
+      },
+    );
+    await fetchAllUser(setUsers);
+  }
+
+  const selectUserForId = async (user_id) => {
+
+    const userRaw = await fetch(
+      `${process.env.REACT_APP_API_ENDPOINT}/users/${user_id}`,
+      {
+        method: 'get',
+        headers: new Headers({
+          'Authorization': `Basic ${encode(process.env.REACT_APP_API_BASIC_USER + ":" + process.env.REACT_APP_API_BASIC_PASSWORD)}`,
+          'Content-Type': 'application/json'
+        }),
+      },
+    );
+    const user = await userRaw.json();
+    makeReadyForUpdate(user)
+  }
+
+  const makeReadyForUpdate = (user) => {
+    setUserId(user.id);
+    setFirstName(user.first_name);
+    setLastName(user.last_name);
+    setCell(user.cell_phone);
+    setAge(user.age);
+  }
+
+  const handleUpdateUser = async () => {
+    const body = {
+      first_name: firstName,
+      last_name: lastName,
+      cell_phone: cell,
+      age: age,
+    }
+
+    removeAllFields();
+
+    await fetch(
+      `${process.env.REACT_APP_API_ENDPOINT}/users/${userId}`,
+      {
+        method: 'PATCH',
+        headers: new Headers({
+          'Authorization': `Basic ${encode(process.env.REACT_APP_API_BASIC_USER + ":" + process.env.REACT_APP_API_BASIC_PASSWORD)}`,
+          'Content-Type': 'application/json'
+        }),
+        body: JSON.stringify(body)
       },
     );
     await fetchAllUser(setUsers);
@@ -142,7 +192,11 @@ function App() {
               type="button"
               value="Submit"
               onClick={async () => {
-                await handleCreateUser();
+                if (userId){
+                  await handleUpdateUser();
+                } else {
+                  await handleCreateUser();
+                }
               }}
             />
           }
@@ -189,7 +243,9 @@ function App() {
                     <td>{user.age}</td>
                     <td className='actionsSection'>
                       <div>
-                        <button>update</button>
+                        <button
+                          onClick={async () => { await selectUserForId(user.id) }}
+                        >update</button>
                         <button
                           onClick={async () => { await handleDeleteUser(user.id) }}
                         >delete</button>
