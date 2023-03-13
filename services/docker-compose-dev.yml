@@ -33,6 +33,9 @@ services:
             - '3001:3000'
         environment:
             - TEST_VAR=test
+            - REACT_APP_API_ENDPOINT=${REACT_APP_API_ENDPOINT}
+            - REACT_APP_API_BASIC_USER=${REACT_APP_API_BASIC_USER}
+            - REACT_APP_API_BASIC_PASSWORD=${REACT_APP_API_BASIC_PASSWORD}
         volumes:
           - ./front-end:/app
         command:

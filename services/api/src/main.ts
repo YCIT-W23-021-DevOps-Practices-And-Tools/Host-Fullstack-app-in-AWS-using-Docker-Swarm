@@ -5,6 +5,7 @@ import * as basicAuth from 'express-basic-auth';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const users = {};
+  app.enableCors();
   users[`${process.env.API_USER_NAME}`] = process.env.API_PASSWORD;
   app.use(
     basicAuth({
