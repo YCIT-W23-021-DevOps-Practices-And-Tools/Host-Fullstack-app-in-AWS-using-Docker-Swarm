@@ -54,6 +54,8 @@ services:
             - '8001:3000'
         environment:
             - TEST_VAR=test
+            - API_USER_NAME=${API_USER_NAME}
+            - API_PASSWORD=${API_PASSWORD}
         volumes:
           - ./api:/app
         command:
