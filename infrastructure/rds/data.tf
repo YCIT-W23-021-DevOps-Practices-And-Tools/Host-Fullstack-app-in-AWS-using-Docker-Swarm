@@ -7,6 +7,6 @@ data "aws_route53_zone" "primary" {
 #     name = "security-group-swarm-servers-internet-and-ssh"
 # }
 
-# data "http" "provisioner-ip" {
-#     url = "https://ipv4.icanhazip.com"
-# }
+data "http" "provisioner-ip" {
+    url = "https://ipv4.icanhazip.com"
+}

@@ -56,12 +56,13 @@ resource "aws_security_group" "rds" {
     #     cidr_blocks     = ["${chomp(data.http.provisioner-ip.response_body)}/32"]
     # }
 
-    # ingress {
-    #     from_port       = 3306
-    #     to_port         = 3306
-    #     protocol        = "TCP"
-    #     security_groups = [data.aws_security_group.swarm-manager-internet-and-ssh.id]
-    # }
+    ingress {
+        from_port       = 3306
+        to_port         = 3306
+        protocol        = "TCP"
+        cidr_blocks     = ["${chomp(data.http.provisioner-ip.response_body)}/32"]
+        description     = "access by provisioner"
+    }
 
     ingress {
         from_port       = 3306
@@ -116,4 +117,17 @@ resource "aws_secretsmanager_secret_version" "rds" {
             port     = "3306"
         }
     )
+}
+
+
+resource "local_sensitive_file" "rds_descriptor" {
+    content  = templatefile("./rds_descriptor.sh",
+        {
+            username = var.rds-username
+            password = random_password.rds.result
+            host     = "${aws_route53_record.rds.name}"
+            port     = "3306"
+        }
+    )
+    filename = "~~rds_descriptor.sh"
 }
