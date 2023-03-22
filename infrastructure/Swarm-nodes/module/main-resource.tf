@@ -23,7 +23,9 @@ resource "aws_instance" "swarm-node" {
     }
 
     root_block_device {
+        volume_size = 40
         encrypted = true
+        volume_type = "gp2"
     }
 
     lifecycle {
