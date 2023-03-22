@@ -1,7 +1,7 @@
 version: '3.8'
 
 secrets:
-  ycit021_front_end_secret001:
+  ycit021_api_secret001:
     external: true
 
 
@@ -10,12 +10,12 @@ networks:
     external: true
 
 services:
-  ycit021_front_end:
+  ycit021_api:
     image: ${DOCKER_LOGIN_USERNAME}/ycit021_prod_${SERVICE_NAME}:${PROJECT_VERSION}
     networks:
       - traefik-public
     secrets:
-      - ycit021_front_end_secret001
+      - ycit021_api_secret001
     deploy:
       mode: replicated
       restart_policy:
@@ -29,14 +29,14 @@ services:
         - traefik.enable=true
         - traefik.docker.network=traefik-public
         - traefik.constraint-label=traefik-public
-        - traefik.http.routers.ycit021_front_end-http.rule=Host(`${APP_DOMAIN?Variable not set}`)
-        - traefik.http.routers.ycit021_front_end-http.entrypoints=http
-        - traefik.http.routers.ycit021_front_end-http.middlewares=https-redirect
-        - traefik.http.routers.ycit021_front_end-https.rule=Host(`${APP_DOMAIN?Variable not set}`)
-        - traefik.http.routers.ycit021_front_end-https.entrypoints=https
-        - traefik.http.routers.ycit021_front_end-https.tls=true
-        - traefik.http.routers.ycit021_front_end-https.tls.certresolver=le
-        - traefik.http.services.ycit021_front_end.loadbalancer.server.port=3000
+        - traefik.http.routers.ycit021_api-http.rule=Host(`${APP_DOMAIN?Variable not set}`)
+        - traefik.http.routers.ycit021_api-http.entrypoints=http
+        - traefik.http.routers.ycit021_api-http.middlewares=https-redirect
+        - traefik.http.routers.ycit021_api-https.rule=Host(`${APP_DOMAIN?Variable not set}`)
+        - traefik.http.routers.ycit021_api-https.entrypoints=https
+        - traefik.http.routers.ycit021_api-https.tls=true
+        - traefik.http.routers.ycit021_api-https.tls.certresolver=le
+        - traefik.http.services.ycit021_api.loadbalancer.server.port=3000
       update_config:
         parallelism: 2
         order: start-first
@@ -49,7 +49,7 @@ services:
       - /bin/bash
       - -c
       - |
-        source /run/secrets/ycit021_front_end_secret001 && npm run start-prod
+        source /run/secrets/ycit021_api_secret001 && node dist/main.js
 
 
 
