@@ -28,4 +28,26 @@ elif [[ "$1" == "build-and-push" ]]; then
 
         source $HOME_FOLDER/services/$SERVICE_NAME/build-and-push.sh
     done
+elif [[ "$1" == "deploy_secrets" ]]; then
+    for service in $(ls -C "$HOME_FOLDER/services/") ; do
+        if [[ ! -f $HOME_FOLDER/services/$service/deploy_secrets.sh ]]; then
+            continue
+        fi
+        export SERVICE_NAME=$service
+
+        export SERVICE_DIR=$HOME_FOLDER/services/$SERVICE_NAME
+
+        source $HOME_FOLDER/services/$SERVICE_NAME/deploy_secrets.sh
+    done
+elif [[ "$1" == "deploy" ]]; then
+    for service in $(ls -C "$HOME_FOLDER/services/") ; do
+        if [[ ! -f $HOME_FOLDER/services/$service/deploy.sh ]]; then
+            continue
+        fi
+        export SERVICE_NAME=$service
+
+        export SERVICE_DIR=$HOME_FOLDER/services/$SERVICE_NAME
+
+        source $HOME_FOLDER/services/$SERVICE_NAME/deploy.sh
+    done
 fi

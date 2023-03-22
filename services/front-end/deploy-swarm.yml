@@ -1,0 +1,57 @@
+version: '3.8'
+
+secrets:
+  ycit021_front_end_secret001:
+    external: true
+
+
+networks:
+  traefik-public:
+    external: true
+
+services:
+  ycit021_front_end:
+    image: ${DOCKER_LOGIN_USERNAME}/ycit021_prod_${SERVICE_NAME}:${PROJECT_VERSION}
+    networks:
+      - traefik-public
+    secrets:
+      - ycit021_front_end_secret001
+    deploy:
+      mode: replicated
+      restart_policy:
+        condition: any
+      placement:
+        constraints:
+          - node.role == worker
+          # - node.role == manager
+      replicas: 1
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.ycit021_front_end-http.rule=Host(`${APP_DOMAIN?Variable not set}`)
+        - traefik.http.routers.ycit021_front_end-http.entrypoints=http
+        - traefik.http.routers.ycit021_front_end-http.middlewares=https-redirect
+        - traefik.http.routers.ycit021_front_end-https.rule=Host(`${APP_DOMAIN?Variable not set}`)
+        - traefik.http.routers.ycit021_front_end-https.entrypoints=https
+        - traefik.http.routers.ycit021_front_end-https.tls=true
+        - traefik.http.routers.ycit021_front_end-https.tls.certresolver=le
+        - traefik.http.services.ycit021_front_end.loadbalancer.server.port=3000
+      update_config:
+        parallelism: 2
+        order: start-first
+        failure_action: rollback
+        delay: 5s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+    command:
+      - /bin/bash
+      - -c
+      - |
+        source /run/secrets/ycit021_front_end_secret001 && npm i && npm run start
+
+
+
+
+
