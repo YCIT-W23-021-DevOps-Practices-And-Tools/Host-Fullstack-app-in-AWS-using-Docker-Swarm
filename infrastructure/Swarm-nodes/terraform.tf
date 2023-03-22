@@ -1,6 +1,6 @@
 terraform {
     backend "s3" {
-        bucket = "terraform-tfstate-locks-jason-test6"
+        bucket = "terraform-tfstate-locks-jason-test11"
         key    = "swarm-nodes"
         region = "ca-central-1"
         dynamodb_table = "terraform-tfstate-lock-dynamo"
