@@ -140,7 +140,7 @@ function App() {
         className='create_user'
       >
         <form action="/action_page.php">
-          <label for="fname">First Name</label>
+          <label htmlFor="fname">First Name</label>
           <input
             type="text"
             placeholder="Your name.."
@@ -150,7 +150,7 @@ function App() {
             }}
           />
 
-          <label for="lname">Last Name</label>
+          <label htmlFor="lname">Last Name</label>
           <input
             type="text"
             placeholder="Your last name.."
@@ -160,7 +160,7 @@ function App() {
             }}
           />
 
-          <label for="lname">Cell phone</label>
+          <label htmlFor="lname">Cell phone</label>
           <input
             type="text"
             placeholder="Your Cell phone.."
@@ -171,7 +171,7 @@ function App() {
           />
 
 
-          <label for="lname">Age</label>
+          <label htmlFor="lname">Age</label>
           <input
             type="text"
             placeholder="Your Age.."

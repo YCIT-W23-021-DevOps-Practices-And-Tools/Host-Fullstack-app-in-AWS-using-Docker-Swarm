@@ -49,7 +49,7 @@ services:
       - /bin/bash
       - -c
       - |
-        source /run/secrets/ycit021_front_end_secret001 && npm run start-prod
+        source /run/secrets/ycit021_front_end_secret001 && npm i && npm run start
 
 
 

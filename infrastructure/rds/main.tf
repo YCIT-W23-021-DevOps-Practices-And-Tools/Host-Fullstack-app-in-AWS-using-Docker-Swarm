@@ -49,12 +49,12 @@ resource "aws_security_group" "rds" {
     name        = "${var.name}"
     description = "${var.name}"
 
-    # ingress {
-    #     from_port       = 3306
-    #     to_port         = 3306
-    #     protocol        = "TCP"
-    #     cidr_blocks     = ["${chomp(data.http.provisioner-ip.response_body)}/32"]
-    # }
+    ingress {
+        from_port       = 3306
+        to_port         = 3306
+        protocol        = "TCP"
+        security_groups = [data.aws_security_group.swarm-manager-internet-and-ssh.id]
+    }
 
     ingress {
         from_port       = 3306
