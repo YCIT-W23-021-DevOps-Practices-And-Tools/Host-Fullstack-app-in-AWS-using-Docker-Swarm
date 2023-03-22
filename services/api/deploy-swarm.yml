@@ -1,7 +1,7 @@
 version: '3.8'
 
 secrets:
-  ycit021_api_secret001:
+  ycit021_api_secret002:
     external: true
 
 
@@ -15,15 +15,15 @@ services:
     networks:
       - traefik-public
     secrets:
-      - ycit021_api_secret001
+      - ycit021_api_secret002
     deploy:
       mode: replicated
       restart_policy:
         condition: any
       placement:
         constraints:
-          - node.role == worker
-          # - node.role == manager
+          # - node.role == worker
+          - node.role == manager
       replicas: 1
       labels:
         - traefik.enable=true
@@ -49,7 +49,7 @@ services:
       - /bin/bash
       - -c
       - |
-        source /run/secrets/ycit021_api_secret001 && node dist/main.js
+        source /run/secrets/ycit021_api_secret002 && node dist/main.js
 
 
 
