@@ -25,10 +25,6 @@ jobs:
           mkdir -p  ~/.ssh
           cp ./infrastructure/key-pairs/~~ycit021-master-key-6.pem ~/.ssh/swarm-manager
           chmod 400 ~/.ssh/swarm-manager
-      # - name: Add ssh configs
-      #   run: |
-      #     printf "StrictHostKeyChecking no\nHost swarm-manager.public.codevteacher.com\n  HostName swarm-manager.public.codevteacher.com\n  User root\n  IdentityFile ~/.ssh/swarm-manager" > ~/.ssh/config
-      #     cat ~/.ssh/config;
       - name: Add ssh configs
         run: |
           echo "StrictHostKeyChecking no" > ~/.ssh/config
@@ -41,3 +37,9 @@ jobs:
       - name: test ssh
         run: |
           ssh root@swarm-manager.public.codevteacher.com "ls -la"
+
+      - name: create a docker context my-swarm-manager
+        run: |
+          docker context create my-swarm-manager --docker "host=ssh://root@swarm-manager.public.codevteacher.com"
+      - name: test docker context_name
+        run: docker --context=my-swarm-manager ps -a
