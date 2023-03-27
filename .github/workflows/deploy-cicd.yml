@@ -1,0 +1,15 @@
+name: deploy
+on:
+  push:
+
+jobs:
+  deploy-services-in-swarm:
+    name: Deploy services in swarm
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v3
+      - name: test code are cloned
+        run: |
+          ls -la
