@@ -1,6 +1,6 @@
 {
   "name": "host-fullstack-app-in-aws-using-docker-swarm",
-  "version": "1.0.21",
+  "version": "1.0.29",
   "description": "",
   "main": "index.js",
   "scripts": {
