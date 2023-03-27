@@ -43,3 +43,9 @@ jobs:
           docker context create my-swarm-manager --docker "host=ssh://root@swarm-manager.public.codevteacher.com"
       - name: test docker context_name
         run: docker --context=my-swarm-manager ps -a
+      - name: Docker login on context
+        run: |
+          echo ${DOCKER_LOGIN_ACCESS_TOKEN} | docker --context=my-swarm-manager login --username ${DOCKER_LOGIN_USERNAME} --password-stdin
+      - name: Deploy infra and services
+        run: |
+          ./deploy.sh
