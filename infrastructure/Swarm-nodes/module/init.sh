@@ -66,4 +66,3 @@ rsync -chavzP --stats root@swarm-manager.private.codevteacher.com:/docker_swarm_
 cd /docker_swarm_config
 
 bash swarm_token.txt
-
