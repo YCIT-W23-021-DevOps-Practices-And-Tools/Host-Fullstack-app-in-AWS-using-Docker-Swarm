@@ -6,10 +6,20 @@ jobs:
   deploy-services-in-swarm:
     name: Deploy services in swarm
     runs-on: ubuntu-latest
+    env:
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      DOCKER_LOGIN_USERNAME: ${{ secrets.DOCKER_LOGIN_USERNAME }}
+      DOCKER_LOGIN_ACCESS_TOKEN: ${{ secrets.DOCKER_LOGIN_ACCESS_TOKEN }}
+
 
     steps:
       - name: Clone Repo
         uses: actions/checkout@v3
-      - name: test code are cloned
+      - name: Deploy Infrastructure
         run: |
-          ls -la
+          ./iac.sh apply-all force
+      - name: Check if ssh key is available
+        run: |
+          cat ./infrastructure/key-pairs/~~ycit021-master-key-6.pub
