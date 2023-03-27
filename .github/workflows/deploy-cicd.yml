@@ -25,21 +25,19 @@ jobs:
           mkdir -p  ~/.ssh
           cp ./infrastructure/key-pairs/~~ycit021-master-key-6.pem ~/.ssh/swarm-manager
           chmod 400 ~/.ssh/swarm-manager
+      # - name: Add ssh configs
+      #   run: |
+      #     printf "StrictHostKeyChecking no\nHost swarm-manager.public.codevteacher.com\n  HostName swarm-manager.public.codevteacher.com\n  User root\n  IdentityFile ~/.ssh/swarm-manager" > ~/.ssh/config
+      #     cat ~/.ssh/config;
       - name: Add ssh configs
         run: |
-          printf "StrictHostKeyChecking no\nHost swarm-manager.public.codevteacher.com\n  HostName swarm-manager.public.codevteacher.com\n  User root\n  IdentityFile ~/.ssh/swarm-manager" > ~/.ssh/config
+          echo "StrictHostKeyChecking no" > ~/.ssh/config
+          echo "Host swarm-manager.public.codevteacher.com" >> ~/.ssh/config
+          echo "  HostName swarm-manager.public.codevteacher.com" >> ~/.ssh/config
+          echo "  User root" >> ~/.ssh/config
+          echo "  IdentityFile ~/.ssh/swarm-manager" >> ~/.ssh/config
           cat ~/.ssh/config;
 
-      - name: Install SSH key of swarm-manager
-        uses: shimataro/ssh-key-action@v2
-        with:
-          known_hosts: swarm-manager.public.codevteacher.com
-          config: |
-            StrictHostKeyChecking no
-            Host swarm-manager.public.codevteacher.com
-              HostName swarm-manager.public.codevteacher.com
-              User root
-              IdentityFile ~/.ssh/swarm-manager
       - name: test ssh
         run: |
           ssh root@swarm-manager.public.codevteacher.com "ls -la"
