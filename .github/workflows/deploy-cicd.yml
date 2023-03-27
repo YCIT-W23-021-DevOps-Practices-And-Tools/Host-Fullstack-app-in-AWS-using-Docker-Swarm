@@ -22,6 +22,7 @@ jobs:
           ./iac.sh apply-all force
       - name: Copy sshkey
         run: |
+          mkdir -p  ~/.ssh
           cp ./infrastructure/key-pairs/~~ycit021-master-key-6.pem ~/.ssh/swarm-manager
           chmod 400 ~/.ssh/swarm-manager
 
