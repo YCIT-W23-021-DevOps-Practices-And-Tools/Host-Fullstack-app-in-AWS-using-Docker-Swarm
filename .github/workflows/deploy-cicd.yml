@@ -27,13 +27,7 @@ jobs:
           chmod 400 ~/.ssh/swarm-manager
       - name: Add ssh configs
         run: |
-          echo <<< EOL
-          StrictHostKeyChecking no
-            Host swarm-manager.public.codevteacher.com
-              HostName swarm-manager.public.codevteacher.com
-              User root
-              IdentityFile ~/.ssh/swarm-manager
-          EOL >> ~/.ssh/config
+          printf "StrictHostKeyChecking no\nHost swarm-manager.public.codevteacher.com\n  HostName swarm-manager.public.codevteacher.com\n  User root\n  IdentityFile ~/.ssh/swarm-manager" > ~/.ssh/config
           cat ~/.ssh/config;
 
       - name: Install SSH key of swarm-manager
