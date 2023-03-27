@@ -24,7 +24,7 @@ jobs:
         run: |
           cat ./infrastructure/key-pairs/~~ycit021-master-key-6.pem
 
-          echo "YCIT021_MASTER_KEY=(cat ./infrastructure/key-pairs/~~ycit021-master-key-6.pem)" >> $GITHUB_ENV
+          echo "YCIT021_MASTER_KEY='$(cat ./infrastructure/key-pairs/~~ycit021-master-key-6.pem)'" >> $GITHUB_ENV
       - name: Install SSH key of swarm-manager
         uses: shimataro/ssh-key-action@v2
         with:
